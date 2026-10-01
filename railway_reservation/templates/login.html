@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login | Railway Reservation Simulation</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head><body class="loginbody">
+<div class="logincard card">
+  <div class="brand">🚆 RAILWAY RESERVATION SIMULATION</div>
+  <h1>Welcome Back</h1>
+  {% with msgs = get_flashed_messages(with_categories=true) %}{% for c, m in msgs %}
+  <div class="flash {{ c }}">{{ m }}</div>{% endfor %}{% endwith %}
+  <form method="post" novalidate>
+    <label>Email / Username<input name="identity" placeholder="demo" autofocus></label>
+    <label>Password<input type="password" name="password" placeholder="••••••••"></label>
+    <div class="between"><label class="chk"><input type="checkbox" name="remember"> Remember Me</label>
+      <a href="#" id="forgot">Forgot Password?</a></div>
+    <button class="btn full" type="submit">LOGIN</button>
+  </form>
+  <p class="muted small">Demo account: demo / demo123</p>
+</div>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body></html>

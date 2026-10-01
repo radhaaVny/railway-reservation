@@ -1,0 +1,37 @@
+{% extends "base.html" %}{% block title %}Home | Railway Reservation{% endblock %}
+{% block content %}
+<section class="hero"><h1>Book Your Journey With Ease</h1>
+<p>Search trains, reserve seats and manage your bookings.</p></section>
+<form class="card searchcard" action="{{ url_for('search') }}" method="get" id="searchform">
+  <label>From<select name="from" required><option value="">Select Station</option>{% for s in stations %}<option>{{ s }}</option>{% endfor %}</select></label>
+  <label>To<select name="to" required><option value="">Select Station</option>{% for s in stations %}<option>{{ s }}</option>{% endfor %}</select></label>
+  <label>Journey Date<input type="date" name="date" min="{{ today }}" value="{{ today }}" required></label>
+  <button class="btn" type="submit">SEARCH TRAINS</button>
+</form>
+<section class="stats">
+  <div class="card stat"><span>🚆</span><b>{{ n_trains }}</b>Available Trains</div>
+  <div class="card stat"><span>🎫</span><b>{{ n_conf }}</b>Confirmed Bookings</div>
+  <div class="card stat"><span>⏳</span><b>{{ n_wait }}</b>Waiting List</div>
+</section>
+<h2>Recent Booking</h2>
+<div class="card">
+{% if recent %}<div class="grid4">
+  <div><small>PNR</small><b>{{ recent.pnr }}</b></div><div><small>Train</small><b>{{ recent.number }} {{ recent.tname }}</b></div>
+  <div><small>Passenger</small><b>{{ recent.pname }}</b></div><div><small>Status</small><span class="badge {{ recent.status }}">{{ recent.status }}</span></div>
+</div>{% else %}<p class="muted">No bookings yet. Search a train to get started.</p>{% endif %}</div>
+<h2>ADS Implementation</h2>
+<div class="card ads">
+  <p><b>Linked List:</b> Confirmed Booking Management &nbsp;|&nbsp; <b>Queue:</b> Waiting List Management</p>
+  {% if ads %}{% for a in ads %}
+  <div class="adsrow"><div class="lbl">Train {{ a.train }} · {{ a.date }}</div>
+    <div class="chain"><small>Linked List</small>
+      {% for n in a.ll %}<span class="node">{{ n.passenger }} (Seat {{ n.seat }})</span><i>→</i>{% endfor %}<span class="null">NULL</span></div>
+    <div class="chain"><small>Queue</small><small>FRONT</small><i>→</i>
+      {% for n in a.q %}<span class="node q">{{ n.passenger }}</span><i>→</i>{% else %}<span class="null">empty</span><i>→</i>{% endfor %}<small>REAR</small></div>
+  </div>{% endfor %}
+  {% else %}
+  <div class="chain"><small>Linked List</small><span class="node">Booking 1</span><i>→</i><span class="node">Booking 2</span><i>→</i><span class="node">Booking 3</span><i>→</i><span class="null">NULL</span></div>
+  <div class="chain"><small>Queue</small><small>FRONT</small><i>→</i><span class="node q">Waiting 1</span><i>→</i><span class="node q">Waiting 2</span><i>→</i><span class="node q">Waiting 3</span><i>←</i><small>REAR</small></div>
+  <p class="muted small">Example structure. Live bookings appear here once you book.</p>{% endif %}
+</div>
+{% endblock %}

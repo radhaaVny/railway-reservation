@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block title %}Book Ticket{% endblock %}
+{% block content %}
+<h1>Book Ticket</h1>
+<div class="card train">
+  <div><b class="tno">{{ train.number }}</b> {{ train.name }}<div class="muted">🕒 {{ train.departure }} → {{ train.arrival }}</div></div>
+  <div class="route">{{ train.source }} → {{ train.destination }}</div>
+  <div>📅 {{ jd }}<br>💺 Seats available: <b>{{ left }}</b></div>
+</div>
+{% if left == 0 %}<div class="flash error">No seats are currently available.</div>{% endif %}
+<form class="card formgrid" method="post" novalidate>
+  <input type="hidden" name="date" value="{{ jd }}">
+  <label>Full Name<input name="name" value="{{ request.form.name }}" required></label>
+  <label>Age<input name="age" type="number" min="1" max="120" value="{{ request.form.age }}" required></label>
+  <label>Gender<select name="gender" required><option value="">Select</option>
+    {% for g in ['Male','Female','Other'] %}<option {{ 'selected' if request.form.gender==g }}>{{ g }}</option>{% endfor %}</select></label>
+  <label>Phone Number<input name="phone" inputmode="numeric" maxlength="10" value="{{ request.form.phone }}" required></label>
+  {% if left > 0 %}<button class="btn" name="action" value="book">CONFIRM BOOKING</button>
+  {% else %}<button class="btn" name="action" value="waitlist">JOIN WAITING LIST</button>{% endif %}
+</form>
+{% endblock %}

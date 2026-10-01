@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% block title %}Search Trains{% endblock %}
+{% block content %}
+<h1>Search Trains</h1>
+<form class="card searchcard" method="get" id="searchform">
+  <label>From<select name="from" required><option value="">Select Station</option>{% for s in stations %}<option {{ 'selected' if s==src }}>{{ s }}</option>{% endfor %}</select></label>
+  <label>To<select name="to" required><option value="">Select Station</option>{% for s in stations %}<option {{ 'selected' if s==dst }}>{{ s }}</option>{% endfor %}</select></label>
+  <label>Journey Date<input type="date" name="date" min="{{ today }}" value="{{ jd or today }}" required></label>
+  <button class="btn" type="submit">SEARCH TRAINS</button>
+</form>
+{% if searched and src and dst and jd and src != dst %}
+  {% for r in results %}{% set t = r.t %}
+  <div class="card train">
+    <div><b class="tno">{{ t.number }}</b> {{ t.name }}<div class="muted">🕒 {{ t.departure }} → {{ t.arrival }}</div></div>
+    <div class="route">{{ t.source }} → {{ t.destination }}</div>
+    <div>💺 Available Seats: <b>{{ r.left }}</b><br>
+      <span class="badge {{ 'CONFIRMED' if r.left else 'WAITING' }}">{{ 'AVAILABLE' if r.left else 'WAITING LIST' }}</span></div>
+    <a class="btn" href="{{ url_for('book', tid=t.id, date=jd) }}">BOOK NOW</a>
+  </div>
+  {% else %}
+  <div class="card center"><p>No trains found for the selected route.</p>
+    <a class="btn ghost" href="#searchform" onclick="document.querySelector('[name=from]').focus()">Modify Search</a></div>
+  {% endfor %}
+{% endif %}
+{% endblock %}

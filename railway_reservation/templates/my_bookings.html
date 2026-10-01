@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title %}My Bookings{% endblock %}
+{% block content %}
+<h1>My Bookings</h1>
+<div class="tabs">{% for t in ['CONFIRMED','WAITING','CANCELLED'] %}
+<a href="{{ url_for('my_bookings', tab=t) }}" class="{{ 'on' if tab==t }}">{{ t }}</a>{% endfor %}</div>
+{% for i in items %}{% set r = i.r %}
+<div class="card train">
+  <div><small>PNR</small><b>{{ r.pnr }}</b><div class="muted">{{ r.pname }}</div></div>
+  <div><b class="tno">{{ r.number }}</b> {{ r.tname }}<div class="muted">📅 {{ r.journey_date }}</div></div>
+  <div>{% if tab=='CONFIRMED' %}💺 Seat <b>{{ r.seat_no }}</b>{% elif tab=='WAITING' %}⏳ <b>WL {{ i.wl }}</b>{% else %}Ticket cancelled{% endif %}<br>
+    <span class="badge {{ r.status }}">{{ r.status }}</span></div>
+  {% if tab != 'CANCELLED' %}<form method="post" action="{{ url_for('cancel', pnr=r.pnr) }}" onsubmit="return confirm('Cancel this ticket?')">
+    <button class="btn">CANCEL TICKET</button></form>{% else %}<span></span>{% endif %}
+</div>
+{% else %}<div class="card center muted">No {{ tab|lower }} bookings.</div>{% endfor %}
+{% endblock %}

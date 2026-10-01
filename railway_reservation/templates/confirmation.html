@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block title %}Booking Status{% endblock %}
+{% block content %}
+<div class="card confirm">
+  {% if b.status == 'CONFIRMED' %}<h1>✓ Booking Confirmed</h1>{% else %}<h1>⏳ Added to Waiting List</h1>
+  <p class="muted">No seats were available. Your place in the queue:</p>{% endif %}
+  <div class="grid4">
+    <div><small>PNR Number</small><b>{{ b.pnr }}</b></div><div><small>Passenger Name</small><b>{{ b.pname }}</b></div>
+    <div><small>Train Number</small><b>{{ b.number }}</b></div><div><small>Train Name</small><b>{{ b.tname }}</b></div>
+    <div><small>Journey Date</small><b>{{ b.journey_date }}</b></div>
+    {% if b.status == 'CONFIRMED' %}<div><small>Seat Number</small><b>{{ b.seat_no }}</b></div>
+    {% else %}<div><small>Waiting List Position</small><b>WL {{ wl }}</b></div>{% endif %}
+    <div><small>Status</small><span class="badge {{ b.status }}">{{ b.status }}</span></div>
+  </div>
+  <div class="actions"><a class="btn" href="{{ url_for('my_bookings', tab=b.status) }}">VIEW MY BOOKING</a>
+    <a class="btn ghost" href="{{ url_for('dashboard') }}">BACK TO HOME</a></div>
+</div>
+{% endblock %}

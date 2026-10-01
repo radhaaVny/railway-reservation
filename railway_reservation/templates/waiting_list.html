@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block title %}Waiting List{% endblock %}
+{% block content %}
+<h1>Waiting List</h1>
+<div class="note">⏳ Queue follows FIFO – First In, First Out.</div>
+{% for g in groups %}
+<div class="card">
+  <div class="lbl">Train {{ g.train }} · {{ g.date }}</div>
+  <div class="chain"><small>FRONT</small><i>→</i>{% for n in g.q %}<span class="node q">{{ n.passenger }}</span><i>→</i>{% endfor %}<small>REAR</small></div>
+  <div class="tablewrap"><table><tr><th>Position</th><th>Passenger</th><th>Train</th><th>Journey Date</th><th>Status</th></tr>
+  {% for n in g.q %}<tr><td>WL {{ n.position }}</td><td>{{ n.passenger }}</td><td>{{ g.train }}</td><td>{{ g.date }}</td><td><span class="badge WAITING">WAITING</span></td></tr>{% endfor %}</table></div>
+</div>
+{% else %}<div class="card center muted">The waiting queue is empty.</div>{% endfor %}
+{% endblock %}

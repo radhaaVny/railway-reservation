@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title %}Profile{% endblock %}
+{% block content %}
+<h1>Profile</h1>
+<div class="card">
+  <div id="view" class="grid4">
+    <div><small>Username</small><b>{{ u.username }}</b></div><div><small>Email</small><b>{{ u.email }}</b></div><div><small>Phone Number</small><b>{{ u.phone }}</b></div>
+  </div>
+  <form id="editform" method="post" class="formgrid" hidden>
+    <label>Email<input name="email" value="{{ u.email }}"></label>
+    <label>Phone Number<input name="phone" maxlength="10" value="{{ u.phone }}"></label>
+    <button class="btn">SAVE</button>
+  </form>
+  <div class="actions"><button class="btn ghost" id="editbtn" type="button">EDIT PROFILE</button>
+    <a class="btn" href="{{ url_for('logout') }}">LOGOUT</a></div>
+</div>
+{% endblock %}
